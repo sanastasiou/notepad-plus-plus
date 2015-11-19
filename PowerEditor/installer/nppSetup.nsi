@@ -36,10 +36,10 @@
 ; Define the application name
 !define APPNAME "Notepad++"
 
-!define APPVERSION "6.8.3"
+!define APPVERSION "6.8.6"
 !define APPNAMEANDVERSION "${APPNAME} v${APPVERSION}"
 !define VERSION_MAJOR 6
-!define VERSION_MINOR 83
+!define VERSION_MINOR 86
 
 !define APPWEBSITE "http://notepad-plus-plus.org/"
 
@@ -625,11 +625,16 @@ Section -"Notepad++" mainSection
 		Rename "$INSTDIR\plugins\NppQCP.dll" "$INSTDIR\plugins\disabled\NppQCP.dll"
 		Delete "$INSTDIR\plugins\NppQCP.dll"
 		
-	IfFileExists "$INSTDIR\plugins\DSpellCheck.dll" 0 +4
-		MessageBox MB_OK "Due to the stability issue,$\nDSpellCheck.dll will be moved to the directory $\"disabled$\"" /SD IDOK
+	IfFileExists "$INSTDIR\plugins\DSpellCheck.dll" 0 +11
+		MessageBox MB_YESNOCANCEL "Due to the stability issue, DSpellCheck.dll will be moved to the directory $\"disabled$\".$\nChoose Cancel to keep it this installation.$\nChoose No to keep it forever." /SD IDYES IDNO never IDCANCEL donothing ;IDYES remove
+	remove:
 		Rename "$INSTDIR\plugins\DSpellCheck.dll" "$INSTDIR\plugins\disabled\DSpellCheck.dll"
 		Delete "$INSTDIR\plugins\DSpellCheck.dll"
-	
+		Goto donothing
+	never:
+		Rename "$INSTDIR\plugins\DSpellCheck.dll" "$INSTDIR\plugins\DSpellCheck2.dll"
+		Goto donothing
+	donothing:
 	
     ; Context Menu Management : removing old version of Context Menu module
 	IfFileExists "$INSTDIR\nppcm.dll" 0 +3
@@ -804,19 +809,6 @@ SectionGroupEnd
 SectionGroup "Plugins" Plugins
 	SetOverwrite on
 
-	${MementoSection} "Npp FTP" NppFTP
-		Delete "$INSTDIR\plugins\NppFTP.dll"
-		SetOutPath "$INSTDIR\plugins"
-		File "..\bin\plugins\NppFTP.dll"
-		SetOutPath "$INSTDIR\plugins\doc\NppFTP"
-		File "..\bin\plugins\doc\NppFTP\license_NppFTP.txt"
-		File "..\bin\plugins\doc\NppFTP\license_libssh.txt"
-		File "..\bin\plugins\doc\NppFTP\license_OpenSSL.txt"
-		File "..\bin\plugins\doc\NppFTP\license_TiXML.txt"
-		File "..\bin\plugins\doc\NppFTP\license_ZLIB.txt"
-		File "..\bin\plugins\doc\NppFTP\license_UTCP.htm"
-		File "..\bin\plugins\doc\NppFTP\Readme.txt"
-	${MementoSectionEnd}
 
 	${MementoSection} "NppExport" NppExport
 		Delete "$INSTDIR\plugins\NppExport.dll"
