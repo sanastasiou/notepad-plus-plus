@@ -1234,6 +1234,14 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPa
 			return TRUE;
 		}
 
+		case NPPM_SETEDITORBORDEREDGE:
+		{
+			bool withBorderEdge = (lParam == 1);
+			_mainEditView.setBorderEdge(withBorderEdge);
+			_subEditView.setBorderEdge(withBorderEdge);
+			return TRUE;
+		}
+
 		case NPPM_INTERNAL_SETMULTISELCTION:
 		{
 			NppGUI & nppGUI = (NppGUI &)pNppParam->getNppGUI();

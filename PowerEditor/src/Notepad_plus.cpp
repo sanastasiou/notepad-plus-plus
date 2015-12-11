@@ -276,6 +276,9 @@ LRESULT Notepad_plus::init(HWND hwnd)
 		_subEditView.execute(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
 	}
 
+	_mainEditView.setBorderEdge(svp1._showBorderEdge);
+	_subEditView.setBorderEdge(svp1._showBorderEdge);
+
 	_mainEditView.execute(SCI_SETCARETLINEVISIBLEALWAYS, true);
 	_subEditView.execute(SCI_SETCARETLINEVISIBLEALWAYS, true);
 
@@ -613,6 +616,7 @@ LRESULT Notepad_plus::init(HWND hwnd)
 	_findCharsInRangeDlg.init(_pPublicInterface->getHinst(), hwnd, &_pEditView);
 	_colEditorDlg.init(_pPublicInterface->getHinst(), hwnd, &_pEditView);
     _aboutDlg.init(_pPublicInterface->getHinst(), hwnd);
+	_debugInfoDlg.init(_pPublicInterface->getHinst(), hwnd, _isAdministrator, _pluginsManager.getLoadedPluginNames());
 	_runDlg.init(_pPublicInterface->getHinst(), hwnd);
 	_runMacroDlg.init(_pPublicInterface->getHinst(), hwnd);
 
